@@ -1,28 +1,34 @@
 import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:meta/meta.dart';
 
 abstract class BlocBasis<Bloc> {
   BlocBasis() {
     state = BehaviorSubject();
     event = BehaviorSubject();
-
-    mapEventToState();
+    initMapper();
   }
 
-  /// Event Subject
+  /// EVENT SUBJECT
   /// 
   BehaviorSubject<BlocEvent<Bloc>> get event;
   set event(BehaviorSubject<BlocEvent<Bloc>> event);
 
-  /// State Subject
+  /// STATE SUBJECT
   /// 
   BehaviorSubject<BlocState<Bloc>> get state;
   set state(BehaviorSubject<BlocState<Bloc>> state);
 
-  /// Map event to a bloc state
-  void mapEventToState();
+  /// EVENT TO STATE MAPPER
+  @protected
+  void listener(Stream<BlocState<Bloc>> Function(BlocEvent<Bloc>) mapper) {
+    event.switchMap(mapper).listen((s) => state.add(s));
+  }
 
-  /// To dispose as created subjects
+  void initMapper();
+  Stream<BlocState<Bloc>> mapper(BlocEvent<Bloc> e);
+
+  /// TO DISPOSE STREAMS
   /// 
   Future<void> dispose(); 
 }
