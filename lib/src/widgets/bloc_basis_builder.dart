@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:bloc_basis/bloc_basis.dart';
 
-class BlocbasisBuilder<Bloc> extends StatelessWidget {
+class BlocBasisBuilder<Bloc> extends StatelessWidget {
 
-  const BlocbasisBuilder({
+  const BlocBasisBuilder({
     Key? key,
     this.initialState,
     this.defaultChild,
